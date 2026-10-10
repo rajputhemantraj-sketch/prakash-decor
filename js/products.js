@@ -2,66 +2,74 @@
 const products = [
     {
         id: 1,
-        name: "Kalash Multi-Diya",
-        price: 599,
+        name: "Large Painted Om Diya Plate",
+        price: 899,
         category: "terracotta",
-        image: "https://placehold.co/600x600/8B0000/D4AF37?text=Kalash+Diya",
-        description: "Handcrafted terracotta Kalash shaped diya with multiple wicks. Perfect for Diwali and auspicious occasions. Made from pure, eco-friendly mitti."
+        image: "images/1.jpeg",
+        extraImages: ["images/1_side.jpeg", "images/1_close.jpeg"], // Add your extra photos here later
+        description: "Beautifully hand-painted terracotta plate featuring a central 'Om' symbol surrounded by colorful attached diyas. Perfect for your main Diwali centerpiece."
     },
     {
         id: 2,
-        name: "Peacock / Mor Multi-Diya",
+        name: "Shree Ganesha Diya Plate",
         price: 799,
         category: "terracotta",
-        image: "https://placehold.co/600x600/8B0000/D4AF37?text=Peacock+Diya",
-        description: "Elegant peacock design crafted into a beautiful terracotta multi-diya piece. Adds a royal traditional touch to your festive decor."
+        image: "images/2.jpeg",
+        extraImages: ["images/2_side.jpeg", "images/2_close.jpeg"],
+        description: "Vibrant hand-painted terracotta plate featuring Lord Ganesha. Adds a divine and traditional touch to your festive decor."
     },
     {
         id: 3,
-        name: "Floral / Rose Multi-Diya",
+        name: "Glitter Rose Wax Candles",
         price: 499,
-        category: "terracotta",
-        image: "https://placehold.co/600x600/8B0000/D4AF37?text=Rose+Diya",
-        description: "Delicate rose petal formations molded from clay, holding multiple diyas for a beautiful, glowing centerpiece."
+        category: "wax",
+        image: "images/3.jpeg",
+        extraImages: ["images/5.jpeg"], 
+        description: "Set of beautifully crafted rose-shaped wax candles with a touch of festive glitter. Available in multiple colors."
     },
     {
         id: 4,
-        name: "Om Kundan Work Diya Plate",
-        price: 899,
-        category: "terracotta",
-        image: "https://placehold.co/600x600/8B0000/D4AF37?text=Om+Kundan+Plate",
-        description: "Premium terracotta plate featuring an intricate 'Om' design decorated with sparkling Kundan stones. Comes with attached diyas."
+        name: "Lotus Wax Candles",
+        price: 549,
+        category: "wax",
+        image: "images/4.jpeg",
+        extraImages: ["images/6.jpeg"],
+        description: "Vibrant lotus-shaped wax candles. Perfect for placing in urulis, water bowls, or rangolis during festivals."
     },
     {
         id: 5,
-        name: "Shree Ganesha Multi-Diya Plate",
-        price: 899,
-        category: "terracotta",
-        image: "https://placehold.co/600x600/8B0000/D4AF37?text=Ganesha+Plate",
-        description: "A divine centerpiece featuring Lord Ganesha surrounded by beautifully crafted mitti diyas. A must-have for puja."
+        name: "Sparkle Daisy Wax Candles",
+        price: 499,
+        category: "wax",
+        image: "images/7.jpeg",
+        extraImages: [],
+        description: "Delicate daisy flower candles topped with festive glitter. Creates a warm, inviting glow for your home."
     },
     {
         id: 6,
-        name: "6-Pack Glitter Rose Wax Candles",
-        price: 549,
-        category: "wax",
-        image: "https://placehold.co/600x600/F26522/ffffff?text=Glitter+Rose",
-        description: "Set of 6 beautifully scented rose-shaped wax candles with a touch of festive glitter. Burns for up to 4 hours."
+        name: "Raw Terracotta Peacock Diya",
+        price: 399,
+        category: "terracotta",
+        image: "images/20261010_181933.jpg",
+        extraImages: [],
+        description: "Traditional unpainted terracotta diya featuring an intricate peacock and leaf design. Pure, eco-friendly mitti."
     },
     {
         id: 7,
-        name: "9-Pack Lotus Wax Candles",
-        price: 699,
-        category: "wax",
-        image: "https://placehold.co/600x600/F26522/ffffff?text=Lotus+Candles",
-        description: "Set of 9 premium lotus-shaped floating wax candles. Perfect for placing in urulis or water bowls during festivals."
+        name: "Raw Terracotta Floral Diya",
+        price: 349,
+        category: "terracotta",
+        image: "images/20261010_181943.jpg",
+        extraImages: [],
+        description: "Beautiful unpainted terracotta diya crafted with detailed floral and vine patterns."
     },
     {
         id: 8,
-        name: "4-Pack Detailed Hibiscus Candles",
-        price: 499,
-        category: "wax",
-        image: "https://placehold.co/600x600/F26522/ffffff?text=Hibiscus+Candles",
-        description: "Intricately detailed hibiscus flower candles. Creates a warm, inviting glow and a subtle, natural fragrance."
+        name: "Raw Terracotta Om Diya",
+        price: 349,
+        category: "terracotta",
+        image: "images/20261010_181949.jpg",
+        extraImages: [],
+        description: "Classic unpainted mitti diya featuring a prominent 'Om' carving surrounded by leaf detailing."
     }
 ];
