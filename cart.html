@@ -8,67 +8,45 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="top-banner">🪔 FESTIVE SPECIAL: FREE DELIVERY ON ORDERS OVER ₹999 | COD AVAILABLE 🪔</div>
+    <canvas id="particles-canvas"></canvas>
+    <div class="top-banner">🪔 Diwali Mahotsav Sale is Live! | BUY 2 GET 1 FREE 🪔</div>
 
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo">Prakash Decor</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html">Shop All</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <div>
-                <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
-                <button class="hamburger" id="mobile-menu-toggle">☰</button>
-            </div>
+            <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li></ul>
+            <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
         </div>
     </header>
 
     <section class="container">
         <h1 class="section-title">Your Cart</h1>
-        
         <div class="cart-layout">
-            <!-- Cart Items rendered by JS -->
             <div class="cart-items-section" id="cart-items-container"></div>
 
-            <!-- Checkout Form -->
             <div class="checkout-section" id="checkout-form-container" style="display: none;">
                 <h3>Order Summary</h3>
-                <h2 style="margin: 15px 0;">Total: <span id="cart-total-amount">₹0</span></h2>
-                
-                <div class="upi-section">
-                    <p><strong>Scan & Pay via UPI (Optional)</strong></p>
-                    <img src="https://placehold.co/150x150?text=UPI+QR+Code" alt="UPI QR" style="margin:10px 0;">
-                    <p>UPI ID: prakashdecor@upi</p>
+                <div style="margin: 15px 0;">
+                    <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span> <span id="summary-subtotal">₹0</span></div>
+                    <div class="discount-row"><span>B2G1 Free Discount:</span> <span id="summary-discount">- ₹0</span></div>
+                    <div class="total-row"><span>Total:</span> <span id="summary-total">₹0</span></div>
+                    <p style="color:var(--primary-red); font-size:0.85rem; text-align:center; margin-top:10px;">
+                        *Get an extra 5% discount if you pay via UPI/Prepaid!
+                    </p>
                 </div>
-
+                
                 <form class="checkout-form" onsubmit="submitOrder(event)">
                     <label>Full Name</label>
-                    <input type="text" id="c-name" required placeholder="Enter your name">
-                    
-                    <label>WhatsApp / Phone Number</label>
-                    <input type="tel" id="c-phone" required placeholder="10-digit mobile number">
-                    
-                    <label>Complete Delivery Address</label>
-                    <textarea id="c-address" rows="3" required placeholder="House No, Street, City, Pincode"></textarea>
-
-                    <p style="font-size:0.9rem; margin-top:15px; color:#555;">Payment can be made via UPI above or Cash on Delivery (COD).</p>
-
-                    <button type="submit" class="btn primary-btn w-100" style="margin-top: 20px;">
-                        Place Order via WhatsApp
-                    </button>
+                    <input type="text" id="c-name" required>
+                    <label>Phone Number</label>
+                    <input type="tel" id="c-phone" required>
+                    <label>Complete Address</label>
+                    <textarea id="c-address" rows="3" required></textarea>
+                    <button type="submit" class="btn primary-btn w-100" style="margin-top: 20px;">Place Order via WhatsApp</button>
                 </form>
             </div>
         </div>
     </section>
-
-    <footer>
-        <h3>Prakash Decor</h3>
-        <p>&copy; 2026 Prakash Decor.</p>
-    </footer>
-
     <script src="js/products.js"></script>
     <script src="js/main.js"></script>
 </body>
