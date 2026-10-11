@@ -5,8 +5,8 @@ const products = [
         name: "Medium Painted Om 21 Diya Plate",
         price: 699,
         category: "terracotta",
-        image: "images/1.jpg",
-        extraImages: ["images/1.1.jpg"], // Add your extra photos here later
+        image: "images/1.jpeg",
+        extraImages: ["images/1.1.jpeg"], // Add your extra photos here later
         description: "Beautifully hand-painted terracotta plate featuring a central 'Om' symbol surrounded by colorful attached diyas. Perfect for your main Diwali centerpiece."
     },
     {
