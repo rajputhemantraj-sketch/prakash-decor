@@ -68,7 +68,7 @@ Invite prosperity and positive energy into your home with this stunning hand-pai
         name: "Handcrafted Kalash Leaf Multi-Diya",
         price: 299,
         category: "terracotta",
-        image: "images/20261010_194629.jpg",
+        image: "images/4.jpeg",
         extraImages: [],
         description: `<b>🪔 Handcrafted Kalash Leaf Terracotta Multi-Diya</b><br><br>
 Brighten your home this festive season with this intricately hand-painted terracotta multi-diya platter. Artfully sculpted with an auspicious Kalash motif crowned by sacred coconut and mango leaves.<br><br>
@@ -91,7 +91,7 @@ Brighten your home this festive season with this intricately hand-painted terrac
         name: "Handcrafted Mor / Peacock Terracotta Multi-Diya",
         price: 249,
         category: "terracotta",
-        image: "images/20261010_194705 - Copy.jpg",
+        image: "images/5.jpeg",
         extraImages: [],
         description: `<b>🪔 Handcrafted Royal Peacock (Mor) Multi-Diya Platter</b><br><br>
 Add traditional elegance and grace to your home with this hand-painted royal peacock multi-diya platter. Featuring an embossed sacred Mor (Peacock) motif with ornate wings and feather curves.<br><br>
@@ -114,7 +114,7 @@ Add traditional elegance and grace to your home with this hand-painted royal pea
         name: "Handcrafted Floral Paisley Multi-Diya Platter",
         price: 249,
         category: "terracotta",
-        image: "images/20261010_194610 - Copy.jpg",
+        image: "images/6.jpeg",
         extraImages: [],
 description: `<b>🪔 Handcrafted Floral Paisley Terracotta Multi-Diya Platter</b><br><br>
 Brighten your home with this artistic hand-painted terracotta multi-diya platter. Designed in an elegant paisley/curved leaf motif featuring an embossed lotus-bud center surrounded by decorative flame-shaped diya.<br><br>
@@ -136,7 +136,7 @@ Brighten your home with this artistic hand-painted terracotta multi-diya platter
         name: "Handcrafted Rose Blossom Multi-Diya Platter",
         price: 249,
         category: "terracotta",
-        image: "images/20261010_194805 - Copy.jpg",
+        image: "images/7.jpeg",
         extraImages: [],
         description: `<b>🪔 Handcrafted Blooming Rose Terracotta Multi-Diya Platter</b><br><br>
 Celebrate the festive season with this vibrant blooming rose multi-diya platter.<br><br>
@@ -158,7 +158,7 @@ Celebrate the festive season with this vibrant blooming rose multi-diya platter.
         name: "4-Pack Handcrafted Blooming Rose Wax Candles",
         price: 199,
         category: "wax",
-        image: "images/5.jpeg",
+        image: "images/8.jpeg",
         extraImages: [],
         description: `<b>🌸 Handcrafted Blooming Rose Wax Candles (Pack of 4)</b><br><br>
 Add warmth, elegance, and soft fragrance to your festive celebration with this set of 4 intricately sculpted blooming rose wax candles[cite: 5, 6].<br><br>
