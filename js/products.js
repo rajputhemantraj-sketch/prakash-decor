@@ -1,34 +1,25 @@
 // js/products.js
 const products = [
-    {
+ {
         id: 1,
         name: "large Painted Om 31 Diya Plate",
         price: 899,
         category: "terracotta",
         image: "images/1.jpeg",
-        extraImages: ["images/1.1.jpeg"],
-        description: `🪔 Hand-Painted Terracotta Om Diya Plate
-Illuminate your home with our magnificent festive centerpiece, handcrafted by local artisans. Featuring an auspicious golden Om (ॐ) at its heart, this eco-friendly clay platter is bordered by 12 hand-molded diyas (oil lamps) to create a stunning circle of natural firelight.
-
-Special Festive Price: ₹899
-
-Diwali Offer: BUY 2 GET 1 FREE (Added automatically at checkout)
-
-Why You’ll Love It:
-Artisan Made: Hand-molded & intricately painted with vibrant festive colors.
-
-Natural Glow: Border of 12 attached clay diyas ready for oil, ghee, or tea lights.
-
-Versatile Decor: Perfect for Diwali Puja, entryways, and Rangoli centerpieces.
-
-Safe Delivery: Packaged securely to arrive in perfect, ready-to-light condition.
-
-Order Highlights:
-Prepaid Discount: Save an extra 5% instantly on UPI & prepaid orders.
-
-Risk-Free Guarantee: 2-day return policy if the product is damaged in transit.
-
-Support local craftsmanship & brighten your festivities this Shubh Deepawali! 🪔`
+        extraImages: ["images/1.1.jpeg"], 
+        description: `<b>🪔 Hand-Painted Terracotta Om Diya Plate</b><br><br>
+Illuminate your home with our magnificent festive centerpiece, handcrafted by local artisans. Featuring an auspicious golden Om (ॐ) at its heart, this eco-friendly clay platter is bordered by 12 hand-molded diyas (oil lamps) to create a stunning circle of natural firelight.<br><br>
+<b>Special Festive Price:</b> ₹899<br>
+<b>Diwali Offer:</b> BUY 2 GET 1 FREE (Added automatically at checkout)<br><br>
+<b>Why You’ll Love It:</b><br>
+• <b>Artisan Made:</b> Hand-molded & intricately painted with vibrant festive colors.<br>
+• <b>Natural Glow:</b> Border of 12 attached clay diyas ready for oil, ghee, or tea lights.<br>
+• <b>Versatile Decor:</b> Perfect for Diwali Puja, entryways, and Rangoli centerpieces.<br>
+• <b>Safe Delivery:</b> Packaged securely to arrive in perfect, ready-to-light condition.<br><br>
+<b>Order Highlights:</b><br>
+• <b>Prepaid Discount:</b> Save an extra 5% instantly on UPI & prepaid orders.<br>
+• <b>Risk-Free Guarantee:</b> 2-day return policy if the product is damaged in transit.<br><br>
+<i>Support local craftsmanship & brighten your festivities this Shubh Deepawali! 🪔</i>`
     },
     {
         id: 2,
