@@ -39,15 +39,6 @@ Support local craftsmanship & brighten your festivities this Shubh Deepawali! ðŸ
         description: "Beautifully hand-painted terracotta plate featuring a central 'Om' symbol surrounded by colorful attached diyas. Perfect for your main Diwali centerpiece."
     },
     {
-        id: 2,
-        name: "Shree Ganesha Diya Plate",
-        price: 799,
-        category: "terracotta",
-        image: "images/2.jpeg",
-        extraImages: ["images/2_side.jpeg", "images/2_close.jpeg"],
-        description: "Vibrant hand-painted terracotta plate featuring Lord Ganesha. Adds a divine and traditional touch to your festive decor."
-    },
-    {
         id: 3,
         name: "Glitter Rose Wax Candles",
         price: 499,
