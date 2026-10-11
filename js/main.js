@@ -1,6 +1,6 @@
-// js/main.js
-
 let cart = JSON.parse(localStorage.getItem('prakash_cart')) || [];
+let wishlist = JSON.parse(localStorage.getItem('prakash_wishlist')) || [];
+let currentCategory = 'all';
 
 function saveCart() {
     localStorage.setItem('prakash_cart', JSON.stringify(cart));
@@ -12,26 +12,48 @@ function updateCartIcon() {
     document.querySelectorAll('.cart-count').forEach(el => el.textContent = totalItems);
 }
 
-function addToCart(productId, isCombo = false) {
-    let product;
-    if (isCombo) {
-        product = { id: 'combo_' + productId, name: "Shubh Deepawali Combo Pack", price: 1299, image: "images/1.jpeg" };
+function saveWishlist() {
+    localStorage.setItem('prakash_wishlist', JSON.stringify(wishlist));
+    updateWishlistCount();
+}
+
+function updateWishlistCount() {
+    const el = document.getElementById('wishlist-count');
+    if (el) el.textContent = wishlist.length;
+}
+
+function toggleWishlist(productId) {
+    const index = wishlist.indexOf(productId);
+    if (index > -1) {
+        wishlist.splice(index, 1);
     } else {
-        product = products.find(p => p.id === productId);
+        wishlist.push(productId);
     }
-    
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) { existingItem.quantity += 1; } 
-    else { cart.push({ ...product, quantity: 1 }); }
-    
+    saveWishlist();
+    renderProducts();
+}
+
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    const existing = cart.find(item => item.id === productId);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
     saveCart();
     alert(`${product.name} added to cart!`);
-    if(document.getElementById('cart-items-container')) renderCart();
+    if (document.getElementById('cart-items-container')) renderCart();
 }
 
 function createProductCard(product) {
+    const isWishlisted = wishlist.includes(product.id);
     return `
         <div class="product-card">
+            <button class="card-wishlist-btn" onclick="toggleWishlist(${product.id})" title="Wishlist">
+                ${isWishlisted ? '❤️' : '🤍'}
+            </button>
             <div class="promo-badge">BUY 2 GET 1 FREE</div>
             <a href="product.html?id=${product.id}">
                 <img src="${product.image}" alt="${product.name}">
@@ -45,28 +67,54 @@ function createProductCard(product) {
     `;
 }
 
+function renderProducts() {
+    const container = document.getElementById('featured-products');
+    if (!container) return;
+    
+    let filtered = products;
+    if (currentCategory !== 'all') {
+        filtered = products.filter(p => p.category === currentCategory);
+    }
+    container.innerHTML = filtered.map(createProductCard).join('');
+}
+
+function filterCategory(category) {
+    currentCategory = category;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    
+    const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => 
+        b.getAttribute('onclick') && b.getAttribute('onclick').includes(category)
+    );
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    renderProducts();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     updateCartIcon();
+    updateWishlistCount();
     initParticles();
     initCountdown();
 
-    const featuredContainer = document.getElementById('featured-products');
-    if (featuredContainer) featuredContainer.innerHTML = products.slice(0, 4).map(createProductCard).join('');
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+    }
 
-    const allProductsContainer = document.getElementById('all-products');
-    if (allProductsContainer) allProductsContainer.innerHTML = products.map(createProductCard).join('');
+    renderProducts();
 
-    const productDetailContainer = document.getElementById('product-detail-container');
-    if (productDetailContainer) {
+    // Product Detail Page Logic
+    const detailContainer = document.getElementById('product-detail-container');
+    if (detailContainer) {
         const productId = parseInt(new URLSearchParams(window.location.search).get('id'));
         const product = products.find(p => p.id === productId);
 
         if (product) {
             document.title = `${product.name} | Prakash Decor`;
-            
-            let extraImagesHTML = '';
+            let extraHTML = '';
             if (product.extraImages && product.extraImages.length > 0) {
-                extraImagesHTML = `
+                extraHTML = `
                     <div class="thumbnail-gallery">
                         <img src="${product.image}" class="thumb active" onclick="changeMainImage(this.src, this)">
                         ${product.extraImages.map(img => `<img src="${img}" class="thumb" onclick="changeMainImage(this.src, this)">`).join('')}
@@ -74,24 +122,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            productDetailContainer.innerHTML = `
+            detailContainer.innerHTML = `
                 <div class="product-detail-image">
                     <img id="main-product-image" src="${product.image}" alt="${product.name}">
-                    ${extraImagesHTML}
+                    ${extraHTML}
                 </div>
                 <div class="product-detail-info">
                     <div class="b2g1-callout">🪔 Diwali Offer: BUY 2 GET 1 FREE</div>
                     <h1>${product.name}</h1>
-                    <p class="detail-price">₹${product.price}</p>
-                    <p class="description">${product.description}</p>
-                    <button class="btn primary-btn w-100" onclick="addToCart(${product.id})">Add to Cart</button>
-                    
-                    <div class="combo-pack">
-                        <h3>🎁 Shubh Deepawali Combo Pack</h3>
-                        <p>Om Diya Platter + 50 Pure Cotton Wicks + Decorative Gift Box</p>
-                        <p class="combo-price">₹1299 <span>₹1449</span></p>
-                        <button class="btn primary-btn" style="background:var(--primary-red); color:var(--primary-gold);" onclick="addToCart(${product.id}, true)">Add Combo to Cart</button>
-                    </div>
+                    <p class="price" style="font-size:1.8rem; margin:10px 0;">₹${product.price}</p>
+                    <div class="description">${product.description}</div>
+                    <button class="btn primary-btn w-100" style="margin-top:20px;" onclick="addToCart(${product.id})">Add to Cart</button>
                 </div>
             `;
         }
@@ -100,55 +141,72 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCart();
 });
 
-function changeMainImage(newSrc, thumbElement) {
+function changeMainImage(newSrc, thumb) {
     document.getElementById('main-product-image').src = newSrc;
     document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active'));
-    thumbElement.classList.add('active');
+    thumb.classList.add('active');
 }
 
 function renderCart() {
     const container = document.getElementById('cart-items-container');
     if (!container) return;
 
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    
+    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
     if (cart.length === 0) {
-        container.innerHTML = '<p>Your cart is empty. <a href="shop.html">Shop Now</a></p>';
+        container.innerHTML = '<p style="text-align:center;">Your cart is empty. <a href="index.html#shop">Shop Now</a></p>';
         document.getElementById('checkout-form-container').style.display = 'none';
         return;
     }
 
     document.getElementById('checkout-form-container').style.display = 'block';
-    
-    // Flat array for B2G1 calculation
+
     let flatCart = [];
     cart.forEach(item => {
-        for(let i=0; i<item.quantity; i++) flatCart.push(item);
+        for (let i = 0; i < item.quantity; i++) flatCart.push(item);
     });
-    
-    // Sort descending by price to deduct cheapest items
-    flatCart.sort((a,b) => b.price - a.price);
-    
+    flatCart.sort((a, b) => b.price - a.price);
+
     let subtotal = 0;
     let b2g1Discount = 0;
-    
     flatCart.forEach((item, index) => {
         subtotal += item.price;
-        if ((index + 1) % 3 === 0) b2g1Discount += item.price; // Every 3rd item is free
+        if ((index + 1) % 3 === 0) b2g1Discount += item.price;
     });
 
-    let html = '';
-    const itemsNeededForNextFree = 3 - (totalItems % 3);
-    if (itemsNeededForNextFree < 3) {
-        html += `<div class="cart-progress">Add ${itemsNeededForNextFree} more item(s) to unlock another FREE Diya!</div>`;
+    let itemsForFree = 3 - (totalCount % 3);
+    let progressHtml = '';
+    if (itemsForFree < 3) {
+        progressHtml = `<div class="cart-progress">Add ${itemsForFree} more item(s) to get 1 FREE Diya!</div>`;
     } else {
-        html += `<div class="cart-progress">You've unlocked a FREE item!</div>`;
+        progressHtml = `<div class="cart-progress">🎉 B2G1 Free Diya Unlocked!</div>`;
     }
 
-    html += cart.map((item, index) => `
+    let finalPayable = subtotal - b2g1Discount;
+    let deliveryFee = finalPayable >= 599 ? 0 : 50;
+
+    // 7. Automatic Free Gift Condition (11 Free Diyas for ₹1000+)
+    let freeGiftUnlocked = finalPayable >= 1000;
+    const giftLine = document.getElementById('free-gift-line');
+    if (giftLine) {
+        giftLine.style.display = freeGiftUnlocked ? 'flex' : 'none';
+    }
+
+    let giftBannerHtml = '';
+    if (freeGiftUnlocked) {
+        giftBannerHtml = `<div class="cart-gift-banner">🎁 Congratulations! 11 Free 2" Diyas will be included in your package!</div>`;
+    } else {
+        let needed = 1000 - finalPayable;
+        giftBannerHtml = `<div class="cart-progress" style="background:#e8f4fd; color:#0d47a1; border-color:#bbdefb;">Add ₹${needed} more to get 11 Free 2" Diyas!</div>`;
+    }
+
+    let itemsHtml = cart.map((item, index) => `
         <div class="cart-item">
             <img src="${item.image}" alt="${item.name}">
-            <div class="cart-item-details"><h4>${item.name}</h4><p>₹${item.price}</p></div>
+            <div class="cart-item-details">
+                <h4>${item.name}</h4>
+                <p>₹${item.price}</p>
+            </div>
             <div class="cart-item-actions">
                 <div class="qty-control">
                     <button onclick="updateQty(${index}, -1)">-</button>
@@ -159,101 +217,117 @@ function renderCart() {
             </div>
         </div>
     `).join('');
-    
-    container.innerHTML = html;
 
-    let finalTotal = subtotal - b2g1Discount;
+    container.innerHTML = progressHtml + giftBannerHtml + itemsHtml;
+
     document.getElementById('summary-subtotal').textContent = `₹${subtotal}`;
     document.getElementById('summary-discount').textContent = `- ₹${b2g1Discount}`;
-    document.getElementById('summary-total').textContent = `₹${finalTotal}`;
+    document.getElementById('summary-delivery').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+    document.getElementById('summary-total').textContent = `₹${finalPayable + deliveryFee}`;
 }
 
-function updateQty(index, change) {
-    cart[index].quantity += change;
+function updateQty(index, delta) {
+    cart[index].quantity += delta;
     if (cart[index].quantity <= 0) cart.splice(index, 1);
-    saveCart(); renderCart();
+    saveCart();
+    renderCart();
 }
 
 function removeItem(index) {
     cart.splice(index, 1);
-    saveCart(); renderCart();
+    saveCart();
+    renderCart();
 }
 
 function submitOrder(event) {
     event.preventDefault();
-    if(cart.length === 0) return;
+    if (cart.length === 0) return;
 
     let flatCart = [];
-    cart.forEach(item => { for(let i=0; i<item.quantity; i++) flatCart.push(item); });
-    flatCart.sort((a,b) => b.price - a.price);
-    
+    cart.forEach(item => {
+        for (let i = 0; i < item.quantity; i++) flatCart.push(item);
+    });
+    flatCart.sort((a, b) => b.price - a.price);
+
     let subtotal = 0;
     let b2g1Discount = 0;
     flatCart.forEach((item, index) => {
         subtotal += item.price;
         if ((index + 1) % 3 === 0) b2g1Discount += item.price;
     });
-    
-    let finalTotal = subtotal - b2g1Discount;
+
+    let finalPayable = subtotal - b2g1Discount;
+    let deliveryFee = finalPayable >= 599 ? 0 : 50;
+    let hasFreeGift = finalPayable >= 1000;
 
     const name = document.getElementById('c-name').value;
     const phone = document.getElementById('c-phone').value;
     const address = document.getElementById('c-address').value;
 
-    let orderDetails = cart.map(item => `${item.quantity}x ${item.name} (₹${item.price})`).join('\n');
-    let message = `*NEW DIWALI ORDER* 🪔\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n${orderDetails}\n\n*Subtotal:* ₹${subtotal}\n*B2G1 Discount:* -₹${b2g1Discount}\n*Total to Pay:* ₹${finalTotal}\n\n_(Note: 5% Extra Discount applies if paying via UPI/Prepaid)_`;
+    let orderItems = cart.map(item => `${item.quantity}x ${item.name} (₹${item.price})`).join('\n');
+    let giftText = hasFreeGift ? `\n🎁 *FREE GIFT INCLUDED:* 11 Pcs 2" Diyas (₹0)` : '';
+
+    let message = `*NEW DIWALI ORDER - PRAKASH DECOR* 🪔\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n${orderItems}${giftText}\n\n*Subtotal:* ₹${subtotal}\n*B2G1 Discount:* -₹${b2g1Discount}\n*Delivery:* ${deliveryFee === 0 ? 'FREE' : '₹' + deliveryFee}\n*Total to Pay:* ₹${finalPayable + deliveryFee}\n\n_(Note: 5% Instant Discount applies if paying via UPI/Prepaid)_`;
 
     window.open(`https://wa.me/919000000000?text=${encodeURIComponent(message)}`, '_blank');
-    cart = []; saveCart(); window.location.href = "index.html";
+    cart = [];
+    saveCart();
+    window.location.href = "index.html";
 }
 
-// --- Particle Engine (Floating Embers) ---
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
-    if(!canvas) return;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particlesArray = [];
-    for (let i = 0; i < 50; i++) {
-        particlesArray.push({
+    const particles = [];
+    for (let i = 0; i < 40; i++) {
+        particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            size: Math.random() * 3 + 1,
-            speedY: Math.random() * -1 - 0.5,
-            opacity: Math.random()
+            size: Math.random() * 2.5 + 1,
+            speedY: Math.random() * -0.8 - 0.3,
+            opacity: Math.random() * 0.7 + 0.3
         });
     }
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particlesArray.forEach(p => {
+        particles.forEach(p => {
             ctx.fillStyle = `rgba(255, 191, 0, ${p.opacity})`;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fill();
             p.y += p.speedY;
-            if (p.y < 0) { p.y = canvas.height; p.x = Math.random() * canvas.width; }
+            if (p.y < 0) {
+                p.y = canvas.height;
+                p.x = Math.random() * canvas.width;
+            }
         });
         requestAnimationFrame(animate);
     }
     animate();
 }
 
-// --- Countdown Timer ---
 function initCountdown() {
     const diwaliDate = new Date("Nov 1, 2026 00:00:00").getTime();
-    const interval = setInterval(() => {
+    setInterval(() => {
         const now = new Date().getTime();
-        const distance = diwaliDate - now;
-        if (distance < 0) { clearInterval(interval); return; }
-        
-        if(document.getElementById('days')) {
-            document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById('mins').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('secs').innerText = Math.floor((distance % (1000 * 60)) / 1000);
+        const diff = diwaliDate - now;
+        if (diff < 0) return;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        if (document.getElementById('days')) {
+            document.getElementById('days').textContent = d;
+            document.getElementById('hours').textContent = h;
+            document.getElementById('mins').textContent = m;
+            document.getElementById('secs').textContent = s;
         }
     }, 1000);
 }

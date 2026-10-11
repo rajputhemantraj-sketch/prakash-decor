@@ -9,13 +9,20 @@
 </head>
 <body>
     <canvas id="particles-canvas"></canvas>
-    <div class="top-banner">🪔 Diwali Mahotsav Sale is Live! | BUY 2 GET 1 FREE 🪔</div>
+    
+    <div class="top-banner">
+        🪔 Diwali Mahotsav Sale is Live! Flat Festive Discounts | Free Delivery Above ₹599 | BUY 2 GET 1 FREE 🪔
+    </div>
 
     <header>
         <div class="nav-container">
-            <a href="index.html" class="logo">Prakash Decor</a>
-            <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li></ul>
-            <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+            <a href="index.html" class="logo-wrap">
+                <img src="images/logo.png" alt="Prakash Decor Logo" class="brand-logo">
+            </a>
+            <div class="header-actions">
+                <a href="index.html#shop" class="action-icon">❤️ <span class="action-badge" id="wishlist-count">0</span></a>
+                <a href="cart.html" class="action-icon cart-icon">🛒 <span class="action-badge cart-count">0</span></a>
+            </div>
         </div>
     </header>
 
@@ -27,26 +34,45 @@
             <div class="checkout-section" id="checkout-form-container" style="display: none;">
                 <h3>Order Summary</h3>
                 <div style="margin: 15px 0;">
-                    <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span> <span id="summary-subtotal">₹0</span></div>
-                    <div class="discount-row"><span>B2G1 Free Discount:</span> <span id="summary-discount">- ₹0</span></div>
+                    <div class="summary-line"><span>Subtotal:</span> <span id="summary-subtotal">₹0</span></div>
+                    <div class="summary-line discount-row"><span>B2G1 Free Discount:</span> <span id="summary-discount">- ₹0</span></div>
+                    
+                    <!-- 7. Free Gift Incentive Banner (11 Free 2-Inch Diyas for orders ₹1000+) -->
+                    <div class="summary-line" id="free-gift-line" style="display: none; color: #2e7d32; font-weight: bold;">
+                        <span>🎁 Free Gift Unlocked:</span> <span>11 Free 2" Diyas (₹0)</span>
+                    </div>
+                    
+                    <div class="summary-line"><span>Delivery:</span> <span id="summary-delivery">₹0</span></div>
                     <div class="total-row"><span>Total:</span> <span id="summary-total">₹0</span></div>
+                    
                     <p style="color:var(--primary-red); font-size:0.85rem; text-align:center; margin-top:10px;">
-                        *Get an extra 5% discount if you pay via UPI/Prepaid!
+                        *Save an extra 5% instantly on UPI / Prepaid payment!
                     </p>
                 </div>
                 
                 <form class="checkout-form" onsubmit="submitOrder(event)">
                     <label>Full Name</label>
-                    <input type="text" id="c-name" required>
+                    <input type="text" id="c-name" required placeholder="Enter full name">
                     <label>Phone Number</label>
-                    <input type="tel" id="c-phone" required>
-                    <label>Complete Address</label>
-                    <textarea id="c-address" rows="3" required></textarea>
+                    <input type="tel" id="c-phone" required placeholder="10-digit mobile number">
+                    <label>Complete Delivery Address</label>
+                    <textarea id="c-address" rows="3" required placeholder="House No, Street, Landmark, City, Pincode"></textarea>
                     <button type="submit" class="btn primary-btn w-100" style="margin-top: 20px;">Place Order via WhatsApp</button>
                 </form>
             </div>
         </div>
     </section>
+
+    <footer>
+        <h2>Prakash Decor</h2>
+        <div class="footer-policies">
+            <span>💳 5% Instant Discount on Prepaid Orders</span>
+            <span>📦 2-Day Return if Product is Damaged</span>
+            <span>🚚 Free Delivery Above ₹599</span>
+        </div>
+        <p style="margin-top: 20px;">&copy; 2026 Prakash Decor.</p>
+    </footer>
+
     <script src="js/products.js"></script>
     <script src="js/main.js"></script>
 </body>

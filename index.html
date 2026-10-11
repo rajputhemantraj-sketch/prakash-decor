@@ -4,59 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prakash Decor | Diwali Mahotsav Sale</title>
+    <meta name="description" content="Shop premium handcrafted terracotta diyas and decorative wax candles for Diwali. Buy 2 Get 1 Free, Free Delivery above ₹599.">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Ambient Particles -->
+    <!-- Ambient Floating Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
 
-    <!-- Top Announcement Bar -->
+    <!-- 1. Top Announcement Bar -->
     <div class="top-banner">
-        🪔 Diwali Mahotsav Sale is Live! Flat Festive Discounts Applied | BUY 2 GET 1 FREE 🪔
+        🪔 Diwali Mahotsav Sale is Live! Flat Festive Discounts | Free Delivery Above ₹599 | BUY 2 GET 1 FREE 🪔
     </div>
 
+    <!-- 2. Header with Logo, Navigation & Wishlist -->
     <header>
         <div class="nav-container">
-            <a href="index.html" class="logo">Prakash Decor</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html">Shop All</a></li>
-            </ul>
-            <a href="cart.html" class="cart-icon">🛒 <span class="cart-count">0</span></a>
+            <button class="hamburger-btn" id="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Brand Logo -->
+            <a href="index.html" class="logo-wrap">
+                <img src="images/logo.png" alt="Prakash Decor Logo" class="brand-logo">
+            </a>
+
+            <!-- Right Actions: Wishlist & Cart -->
+            <div class="header-actions">
+                <a href="#shop" class="action-icon" id="wishlist-btn" title="Wishlist">
+                    ❤️ <span class="action-badge" id="wishlist-count">0</span>
+                </a>
+                <a href="cart.html" class="action-icon cart-icon" title="Cart">
+                    🛒 <span class="action-badge cart-count">0</span>
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu" id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#shop" onclick="filterCategory('all')">All Products</a></li>
+                    <li><a href="#shop" onclick="filterCategory('terracotta')">Diyas</a></li>
+                    <li><a href="#shop" onclick="filterCategory('wax')">Wax</a></li>
+                    <li><a href="#shop" onclick="filterCategory('lights')">Lights</a></li>
+                    <li><a href="#shop" onclick="filterCategory('decor')">Other Decor</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Hero Section with Countdown -->
+    <!-- 3. Hero Section with Rangoli Doorstep Background & Festive Atmosphere -->
     <section class="hero">
-        <h1>Shubh Deepawali</h1>
-        <p>Illuminate your home with our premium handcrafted terracotta diyas. Buy 2 Get 1 Free on all items!</p>
-        
-        <div class="countdown-container">
-            <div class="countdown-box"><span id="days">0</span><label>Days</label></div>
-            <div class="countdown-box"><span id="hours">0</span><label>Hours</label></div>
-            <div class="countdown-box"><span id="mins">0</span><label>Mins</label></div>
-            <div class="countdown-box"><span id="secs">0</span><label>Secs</label></div>
-        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Shubh Deepawali</h1>
+            <p>Illuminate your home with our premium handcrafted terracotta diyas. Buy 2 Get 1 Free on all items!</p>
+            
+            <div class="countdown-container">
+                <div class="countdown-box"><span id="days">0</span><label>Days</label></div>
+                <div class="countdown-box"><span id="hours">0</span><label>Hours</label></div>
+                <div class="countdown-box"><span id="mins">0</span><label>Mins</label></div>
+                <div class="countdown-box"><span id="secs">0</span><label>Secs</label></div>
+            </div>
 
-        <a href="shop.html" class="btn primary-btn">Shop The Festive Collection</a>
+            <a href="#shop" class="btn primary-btn">Shop The Festive Collection</a>
+        </div>
     </section>
 
-    <section class="container">
+    <!-- 4. Category Library Filter Tabs (Diyas, Wax, Lights, Other Decor) -->
+    <section class="container" id="shop">
         <h2 class="section-title">Festive Collection</h2>
+        
+        <div class="category-tabs">
+            <button class="tab-btn active" onclick="filterCategory('all')">All Products</button>
+            <button class="tab-btn" onclick="filterCategory('terracotta')">🪔 Diyas</button>
+            <button class="tab-btn" onclick="filterCategory('wax')">🌸 Wax</button>
+            <button class="tab-btn" onclick="filterCategory('lights')">✨ Lights</button>
+            <button class="tab-btn" onclick="filterCategory('decor')">🏮 Other Decor</button>
+        </div>
+
         <div id="featured-products" class="product-grid"></div>
     </section>
 
-    <a href="https://wa.me/919000000000" class="whatsapp-float" target="_blank">💬</a>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/919000000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
 
+    <!-- 5. Footer Policy (Removed Free Delivery Over ₹999) -->
     <footer>
         <h2>Prakash Decor</h2>
         <div class="footer-policies">
             <span>💳 5% Instant Discount on Prepaid Orders</span>
             <span>📦 2-Day Return if Product is Damaged</span>
-            <span>🚚 Free Delivery Over ₹999</span>
+            <span>🚚 Free Delivery Above ₹599</span>
         </div>
-        <p style="margin-top: 20px;">&copy; 2026 Prakash Decor.</p>
+        <p style="margin-top: 20px;">&copy; 2026 Prakash Decor. All rights reserved.</p>
     </footer>
 
     <script src="js/products.js"></script>
