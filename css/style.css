@@ -1,3 +1,4 @@
+/* css/style.css */
 :root {
     --primary-red: #800000;
     --primary-gold: #FFBF00;
@@ -33,7 +34,7 @@ body {
 h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--primary-red); }
 a { text-decoration: none; color: inherit; transition: color 0.3s; }
 
-/* 1. Announcement Bar */
+/* Top Announcement Bar */
 .top-banner {
     background: linear-gradient(90deg, var(--primary-red), #5a0000);
     color: var(--primary-gold);
@@ -48,7 +49,32 @@ a { text-decoration: none; color: inherit; transition: color 0.3s; }
     border-bottom: 2px solid var(--primary-gold);
 }
 
-/* 2. Header & Logo Styling */
+/* Running Marquee Alert */
+.marquee-bar {
+    background-color: #ffe082;
+    color: #4a2800;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 6px 0;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border-bottom: 1px solid #ffd54f;
+    position: relative;
+    z-index: 100;
+}
+
+.marquee-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee-scroll 25s linear infinite;
+}
+
+@keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Header & Navigation Bar */
 header {
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
@@ -165,7 +191,7 @@ header {
     }
 }
 
-/* 3. Hero Section: Festive Rangoli & Doorstep Atmosphere */
+/* Hero Section */
 .hero {
     position: relative;
     background: linear-gradient(rgba(45, 4, 4, 0.78), rgba(28, 2, 2, 0.88)), 
@@ -234,7 +260,7 @@ header {
     letter-spacing: 1px;
 }
 
-/* 4. Category Tabs */
+/* Category Filter Tabs */
 .category-tabs {
     display: flex;
     justify-content: center;
@@ -261,7 +287,7 @@ header {
     border-color: var(--primary-red);
 }
 
-/* Product Cards */
+/* Products Grid */
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 .section-title { text-align: center; font-size: 2.2rem; margin: 30px 0 25px; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px; }
@@ -368,7 +394,7 @@ header {
 
 .w-100 { width: 100%; }
 
-/* Cart & Checkout Styling */
+/* Cart Layout & Dual Checkout */
 .cart-layout { display: flex; flex-wrap: wrap; gap: 30px; margin: 30px 0; }
 .cart-items-section { flex: 2; min-width: 300px; }
 .cart-item {
@@ -403,6 +429,17 @@ header {
     text-align: center;
     font-weight: bold;
     border: 1px solid #ffeeba;
+}
+
+.min-order-alert {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ffcdd2;
 }
 
 .cart-gift-banner {
@@ -453,6 +490,34 @@ header {
     font-family: var(--font-body);
 }
 
+.online-pay-btn {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    color: #ffffff;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.online-pay-btn:hover { background: linear-gradient(135deg, #1b5e20, #0d3813); }
+
+.cod-btn {
+    background: #ffffff;
+    color: var(--primary-red);
+    border: 2px solid var(--primary-red);
+    font-size: 0.95rem;
+}
+
+.cod-btn:hover { background: var(--primary-red); color: #ffffff; }
+
+/* Product Detail & Thumbnails */
+.product-detail-container { display: flex; flex-wrap: wrap; gap: 40px; margin: 40px 0; }
+.product-detail-image { flex: 1; min-width: 300px; }
+.product-detail-image img { width: 100%; border-radius: 8px; border: 2px solid var(--primary-gold); }
+.thumbnail-gallery { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; }
+.thumb { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer; opacity: 0.6; }
+.thumb.active, .thumb:hover { opacity: 1; border: 2px solid var(--primary-gold); }
+.product-detail-info { flex: 1; min-width: 300px; }
+.b2g1-callout { background: var(--primary-red); color: var(--primary-gold); padding: 6px 12px; border-radius: 4px; font-weight: bold; margin-bottom: 12px; display: inline-block; }
+
 .whatsapp-float {
     position: fixed; width: 60px; height: 60px; bottom: 20px; right: 20px;
     background-color: #25d366; color: #FFF; border-radius: 50px; text-align: center;
@@ -460,12 +525,11 @@ header {
     display: flex; align-items: center; justify-content: center;
 }
 
-/* 5. Clean Footer Policies */
 footer { background-color: var(--primary-red); color: var(--primary-gold); text-align: center; padding: 40px 20px; margin-top: 40px; }
 .footer-policies { display: flex; justify-content: center; gap: 16px; margin-top: 20px; font-size: 0.9rem; flex-wrap: wrap; }
 .footer-policies span { background: rgba(255, 191, 0, 0.12); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--primary-gold); }
 
 @media (max-width: 768px) {
-    .cart-layout { flex-direction: column; }
+    .cart-layout, .product-detail-container { flex-direction: column; }
     .hero h1 { font-size: 2.1rem; }
 }

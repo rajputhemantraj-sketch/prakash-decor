@@ -3,23 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Prakash Decor</title>
+    <title>Contact Us | Prakash Decor</title>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="top-banner">
+        🪔 Diwali Mahotsav Sale is Live! BUY 2 GET 1 FREE on Items ₹500+ | Free Delivery Above ₹599 🪔
+    </div>
+
     <header>
         <div class="nav-container">
-            <a href="index.html" class="logo">Prakash Decor</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop All</a></li>
-            </ul>
+            <a href="index.html" class="logo-wrap">
+                <img src="images/logo.png" alt="Prakash Decor Logo" class="brand-logo">
+            </a>
+            <div class="header-actions">
+                <a href="index.html#shop" class="action-icon">❤️ <span class="action-badge" id="wishlist-count">0</span></a>
+                <a href="cart.html" class="action-icon cart-icon">🛒 <span class="action-badge cart-count">0</span></a>
+            </div>
+            <nav class="nav-menu" id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#shop">Shop All</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
-    <section class="container" style="text-align:center; padding: 100px 20px;">
+
+    <section class="container" style="max-width: 800px; padding: 50px 20px;">
         <h1 class="section-title">Get in Touch</h1>
-        <p>Have a question or a bulk order request?</p>
-        <a href="https://wa.me/919000000000" class="btn primary-btn" style="margin-top:20px;">Message us on WhatsApp</a>
+        
+        <div style="background: #ffffff; border: 1px solid var(--primary-gold); border-radius: 8px; padding: 35px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); text-align: center;">
+            <h2 style="margin-bottom: 20px;">Prakash Decor</h2>
+            
+            <div style="margin-bottom: 20px; font-size: 1.05rem;">
+                <p>📍 <strong>Address:</strong></p>
+                <p style="color: #555; margin-top: 5px;">Prakash Decor, Uttam Nagar, New Delhi - 110059</p>
+            </div>
+
+            <div style="margin-bottom: 20px; font-size: 1.05rem;">
+                <p>📧 <strong>Email Us:</strong></p>
+                <p><a href="mailto:decorprakash@gmail.com" style="color: var(--primary-red); font-weight: bold;">decorprakash@gmail.com</a></p>
+            </div>
+
+            <div style="margin-bottom: 25px; font-size: 1.05rem;">
+                <p>📱 <strong>WhatsApp / Phone:</strong></p>
+                <p><a href="https://wa.me/911135995194" target="_blank" style="color: #25d366; font-weight: bold;">+91 1135995194</a></p>
+            </div>
+
+            <a href="https://wa.me/911135995194?text=Hi%20Prakash%20Decor,%20I%20have%20an%20enquiry!" 
+               class="btn primary-btn" target="_blank">
+                💬 Chat on WhatsApp
+            </a>
+        </div>
     </section>
+
+    <a href="https://wa.me/911135995194" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+
+    <footer>
+        <h2>Prakash Decor</h2>
+        <p style="margin-top: 6px; font-size: 0.95rem;">
+            Uttam Nagar, New Delhi - 110059 | <a href="mailto:decorprakash@gmail.com">decorprakash@gmail.com</a>
+        </p>
+        <div class="footer-policies" style="margin-top: 15px;">
+            <span>💳 5% Instant Discount on Prepaid Orders</span>
+            <span>📦 2-Day Return if Product is Damaged</span>
+            <span>🚚 Free Delivery Above ₹599</span>
+        </div>
+        <p style="margin-top: 20px;">&copy; 2026 Prakash Decor. All rights reserved.</p>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

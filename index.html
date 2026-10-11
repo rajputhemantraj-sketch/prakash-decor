@@ -4,20 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prakash Decor | Diwali Mahotsav Sale</title>
-    <meta name="description" content="Shop premium handcrafted terracotta diyas and decorative wax candles for Diwali. Buy 2 Get 1 Free, Free Delivery above ₹599.">
+    <meta name="description" content="Shop premium handcrafted terracotta and wax festive decor for Diwali. BUY 2 GET 1 FREE on items ₹500+, Free Delivery above ₹599.">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Ambient Floating Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
 
-    <!-- 1. Top Announcement Bar -->
+    <!-- Top Announcement Bar -->
     <div class="top-banner">
-        🪔 Diwali Mahotsav Sale is Live! Flat Festive Discounts | Free Delivery Above ₹599 | BUY 2 GET 1 FREE 🪔
+        🪔 Diwali Mahotsav Sale is Live! BUY 2 GET 1 FREE on Items ₹500+ | Free Delivery Above ₹599 🪔
     </div>
 
-    <!-- 2. Header with Logo, Navigation & Wishlist -->
+    <!-- Running Marquee Notice -->
+    <div class="marquee-bar">
+        <div class="marquee-content">
+            ⚡ <b>NOTICE:</b> Minimum cart / buying value is ₹599 to checkout | BUY 2 GET 1 FREE automatically applied on plates ₹500+ | Free Delivery on all orders ₹599 and above! ⚡
+        </div>
+    </div>
+
     <header>
         <div class="nav-container">
             <button class="hamburger-btn" id="menu-toggle" aria-label="Toggle navigation">
@@ -26,12 +31,10 @@
                 <span></span>
             </button>
 
-            <!-- Brand Logo -->
             <a href="index.html" class="logo-wrap">
                 <img src="images/logo.png" alt="Prakash Decor Logo" class="brand-logo">
             </a>
 
-            <!-- Right Actions: Wishlist & Cart -->
             <div class="header-actions">
                 <a href="#shop" class="action-icon" id="wishlist-btn" title="Wishlist">
                     ❤️ <span class="action-badge" id="wishlist-count">0</span>
@@ -41,7 +44,6 @@
                 </a>
             </div>
 
-            <!-- Navigation Links -->
             <nav class="nav-menu" id="nav-menu">
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
@@ -56,12 +58,11 @@
         </div>
     </header>
 
-    <!-- 3. Hero Section with Rangoli Doorstep Background & Festive Atmosphere -->
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1>Shubh Deepawali</h1>
-            <p>Illuminate your home with our premium handcrafted terracotta diyas. Buy 2 Get 1 Free on all items!</p>
+            <p>Illuminate your home with our premium handcrafted terracotta diyas. Buy 2 Get 1 Free on all premium plates ₹500+!</p>
             
             <div class="countdown-container">
                 <div class="countdown-box"><span id="days">0</span><label>Days</label></div>
@@ -74,7 +75,6 @@
         </div>
     </section>
 
-    <!-- 4. Category Library Filter Tabs (Diyas, Wax, Lights, Other Decor) -->
     <section class="container" id="shop">
         <h2 class="section-title">Festive Collection</h2>
         
@@ -89,13 +89,16 @@
         <div id="featured-products" class="product-grid"></div>
     </section>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/919000000000" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/911135995194" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">💬</a>
 
-    <!-- 5. Footer Policy (Removed Free Delivery Over ₹999) -->
+    <!-- Footer -->
     <footer>
         <h2>Prakash Decor</h2>
-        <div class="footer-policies">
+        <p style="margin-top: 6px; font-size: 0.95rem;">
+            Uttam Nagar, New Delhi - 110059 | <a href="mailto:decorprakash@gmail.com">decorprakash@gmail.com</a>
+        </p>
+        <div class="footer-policies" style="margin-top: 15px;">
             <span>💳 5% Instant Discount on Prepaid Orders</span>
             <span>📦 2-Day Return if Product is Damaged</span>
             <span>🚚 Free Delivery Above ₹599</span>

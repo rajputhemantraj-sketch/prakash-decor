@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | Prakash Decor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Meta Pixel Tracking Script -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+
+    const lastOrder = JSON.parse(localStorage.getItem('prakash_last_order')) || { total: 0 };
+    fbq('track', 'Purchase', {
+        value: lastOrder.total,
+        currency: 'INR'
+    });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-wrap">
+                <img src="images/logo.png" alt="Prakash Decor Logo" class="brand-logo">
+            </a>
+        </div>
+    </header>
+
+    <section class="container" style="text-align: center; padding: 80px 20px;">
+        <h1 style="color: #2e7d32; font-size: 2.5rem; margin-bottom: 15px;">🎉 Payment Successful!</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 25px;">
+            Thank you for shopping with Prakash Decor. Your festive order has been placed and is being packed with protective cushioning.
+        </p>
+        <div style="background: #fff; max-width: 500px; margin: 0 auto 30px; padding: 25px; border-radius: 8px; border: 1px solid var(--primary-gold);">
+            <h3>We’ll Dispatch Shortly</h3>
+            <p style="font-size: 0.95rem; color: #555; margin-top: 8px;">
+                You will receive shipment updates directly on your WhatsApp number.
+            </p>
+        </div>
+        <a href="index.html" class="btn primary-btn">Continue Shopping</a>
+    </section>
+
+    <script>
+        localStorage.removeItem('prakash_cart');
+    </script>
+</body>
+</html>

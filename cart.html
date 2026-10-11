@@ -11,7 +11,13 @@
     <canvas id="particles-canvas"></canvas>
     
     <div class="top-banner">
-        🪔 Diwali Mahotsav Sale is Live! Flat Festive Discounts | Free Delivery Above ₹599 | BUY 2 GET 1 FREE 🪔
+        🪔 Diwali Mahotsav Sale is Live! BUY 2 GET 1 FREE on Items ₹500+ | Free Delivery Above ₹599 🪔
+    </div>
+
+    <div class="marquee-bar">
+        <div class="marquee-content">
+            ⚡ <b>NOTICE:</b> Minimum cart / buying value is ₹599 to checkout | Free Delivery on all orders ₹599 and above! ⚡
+        </div>
     </div>
 
     <header>
@@ -35,29 +41,34 @@
                 <h3>Order Summary</h3>
                 <div style="margin: 15px 0;">
                     <div class="summary-line"><span>Subtotal:</span> <span id="summary-subtotal">₹0</span></div>
-                    <div class="summary-line discount-row"><span>B2G1 Free Discount:</span> <span id="summary-discount">- ₹0</span></div>
-                    
-                    <!-- 7. Free Gift Incentive Banner (11 Free 2-Inch Diyas for orders ₹1000+) -->
+                    <div class="summary-line discount-row"><span>B2G1 Free Discount (Items ₹500+):</span> <span id="summary-discount">- ₹0</span></div>
                     <div class="summary-line" id="free-gift-line" style="display: none; color: #2e7d32; font-weight: bold;">
                         <span>🎁 Free Gift Unlocked:</span> <span>11 Free 2" Diyas (₹0)</span>
                     </div>
+                    <div class="summary-line"><span>Delivery:</span> <span id="summary-delivery">FREE</span></div>
+                    <div class="total-row"><span>Total Payable:</span> <span id="summary-total">₹0</span></div>
                     
-                    <div class="summary-line"><span>Delivery:</span> <span id="summary-delivery">₹0</span></div>
-                    <div class="total-row"><span>Total:</span> <span id="summary-total">₹0</span></div>
-                    
-                    <p style="color:var(--primary-red); font-size:0.85rem; text-align:center; margin-top:10px;">
-                        *Save an extra 5% instantly on UPI / Prepaid payment!
-                    </p>
+                    <div class="summary-line discount-row" style="margin-top: 8px;">
+                        <span>Online UPI / Card (5% Off):</span> <span id="summary-prepaid-total">₹0</span>
+                    </div>
                 </div>
                 
-                <form class="checkout-form" onsubmit="submitOrder(event)">
+                <form class="checkout-form" id="order-form">
                     <label>Full Name</label>
                     <input type="text" id="c-name" required placeholder="Enter full name">
                     <label>Phone Number</label>
                     <input type="tel" id="c-phone" required placeholder="10-digit mobile number">
                     <label>Complete Delivery Address</label>
-                    <textarea id="c-address" rows="3" required placeholder="House No, Street, Landmark, City, Pincode"></textarea>
-                    <button type="submit" class="btn primary-btn w-100" style="margin-top: 20px;">Place Order via WhatsApp</button>
+                    <textarea id="c-address" rows="3" required placeholder="House No, Street, City, Pincode"></textarea>
+
+                    <div class="dual-checkout-buttons" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+                        <button type="button" class="btn online-pay-btn w-100" id="btn-pay-online" onclick="handleOnlinePayment()">
+                            ⚡ Pay Online & Save 5% (Instant UPI / Cards)
+                        </button>
+                        <button type="button" class="btn cod-btn w-100" id="btn-pay-cod" onclick="handleCodWhatsApp()">
+                            🚚 Cash on Delivery via WhatsApp
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -65,7 +76,10 @@
 
     <footer>
         <h2>Prakash Decor</h2>
-        <div class="footer-policies">
+        <p style="margin-top: 6px; font-size: 0.95rem;">
+            Uttam Nagar, New Delhi - 110059 | <a href="mailto:decorprakash@gmail.com">decorprakash@gmail.com</a>
+        </p>
+        <div class="footer-policies" style="margin-top: 15px;">
             <span>💳 5% Instant Discount on Prepaid Orders</span>
             <span>📦 2-Day Return if Product is Damaged</span>
             <span>🚚 Free Delivery Above ₹599</span>

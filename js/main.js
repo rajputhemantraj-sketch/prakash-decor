@@ -1,6 +1,12 @@
+// js/main.js
 let cart = JSON.parse(localStorage.getItem('prakash_cart')) || [];
 let wishlist = JSON.parse(localStorage.getItem('prakash_wishlist')) || [];
 let currentCategory = 'all';
+
+// Replace with your Razorpay hosted page link when ready
+const RAZORPAY_PAGE_URL = "https://pages.razorpay.com/pl_YOUR_PAGE_ID/view";
+// Business WhatsApp Number (digits only, with country code)
+const SELLER_WHATSAPP = "911135995194";
 
 function saveCart() {
     localStorage.setItem('prakash_cart', JSON.stringify(cart));
@@ -14,10 +20,6 @@ function updateCartIcon() {
 
 function saveWishlist() {
     localStorage.setItem('prakash_wishlist', JSON.stringify(wishlist));
-    updateWishlistCount();
-}
-
-function updateWishlistCount() {
     const el = document.getElementById('wishlist-count');
     if (el) el.textContent = wishlist.length;
 }
@@ -49,12 +51,13 @@ function addToCart(productId) {
 
 function createProductCard(product) {
     const isWishlisted = wishlist.includes(product.id);
+    const badgeText = product.price >= 500 ? "BUY 2 GET 1 FREE" : "MIN. CART ₹599";
     return `
         <div class="product-card">
             <button class="card-wishlist-btn" onclick="toggleWishlist(${product.id})" title="Wishlist">
                 ${isWishlisted ? '❤️' : '🤍'}
             </button>
-            <div class="promo-badge">BUY 2 GET 1 FREE</div>
+            <div class="promo-badge">${badgeText}</div>
             <a href="product.html?id=${product.id}">
                 <img src="${product.image}" alt="${product.name}">
             </a>
@@ -70,7 +73,6 @@ function createProductCard(product) {
 function renderProducts() {
     const container = document.getElementById('featured-products');
     if (!container) return;
-    
     let filtered = products;
     if (currentCategory !== 'all') {
         filtered = products.filter(p => p.category === currentCategory);
@@ -81,77 +83,63 @@ function renderProducts() {
 function filterCategory(category) {
     currentCategory = category;
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
     const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => 
         b.getAttribute('onclick') && b.getAttribute('onclick').includes(category)
     );
     if (activeBtn) activeBtn.classList.add('active');
-    
     renderProducts();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartIcon();
-    updateWishlistCount();
-    initParticles();
-    initCountdown();
+// Discount & Cart Calculation
+function calculateCartTotals() {
+    let eligibleB2G1 = [];
+    let subtotal = 0;
 
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
-    }
-
-    renderProducts();
-
-    // Product Detail Page Logic
-    const detailContainer = document.getElementById('product-detail-container');
-    if (detailContainer) {
-        const productId = parseInt(new URLSearchParams(window.location.search).get('id'));
-        const product = products.find(p => p.id === productId);
-
-        if (product) {
-            document.title = `${product.name} | Prakash Decor`;
-            let extraHTML = '';
-            if (product.extraImages && product.extraImages.length > 0) {
-                extraHTML = `
-                    <div class="thumbnail-gallery">
-                        <img src="${product.image}" class="thumb active" onclick="changeMainImage(this.src, this)">
-                        ${product.extraImages.map(img => `<img src="${img}" class="thumb" onclick="changeMainImage(this.src, this)">`).join('')}
-                    </div>
-                `;
+    cart.forEach(item => {
+        for (let i = 0; i < item.quantity; i++) {
+            subtotal += item.price;
+            // B2G1 applicable only on products >= ₹500
+            if (item.price >= 500) {
+                eligibleB2G1.push(item);
             }
-
-            detailContainer.innerHTML = `
-                <div class="product-detail-image">
-                    <img id="main-product-image" src="${product.image}" alt="${product.name}">
-                    ${extraHTML}
-                </div>
-                <div class="product-detail-info">
-                    <div class="b2g1-callout">🪔 Diwali Offer: BUY 2 GET 1 FREE</div>
-                    <h1>${product.name}</h1>
-                    <p class="price" style="font-size:1.8rem; margin:10px 0;">₹${product.price}</p>
-                    <div class="description">${product.description}</div>
-                    <button class="btn primary-btn w-100" style="margin-top:20px;" onclick="addToCart(${product.id})">Add to Cart</button>
-                </div>
-            `;
         }
-    }
+    });
 
-    renderCart();
-});
+    eligibleB2G1.sort((a, b) => b.price - a.price);
 
-function changeMainImage(newSrc, thumb) {
-    document.getElementById('main-product-image').src = newSrc;
-    document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active'));
-    thumb.classList.add('active');
+    let b2g1Discount = 0;
+    eligibleB2G1.forEach((item, index) => {
+        if ((index + 1) % 3 === 0) {
+            b2g1Discount += item.price; // 3rd item free
+        }
+    });
+
+    let finalPayable = subtotal - b2g1Discount;
+    let deliveryFee = finalPayable >= 599 ? 0 : 50;
+    let orderTotal = finalPayable + deliveryFee;
+    let prepaidTotal = Math.round(orderTotal * 0.95); // 5% prepaid discount
+
+    // Minimum cart requirement: if contains items < 500, payable must be >= 599
+    const hasItemsBelow500 = cart.some(item => item.price < 500);
+    const meetsMinimum = !hasItemsBelow500 || finalPayable >= 599;
+
+    return {
+        subtotal,
+        b2g1Discount,
+        deliveryFee,
+        orderTotal,
+        prepaidTotal,
+        finalPayable,
+        hasGift: finalPayable >= 1000,
+        eligibleB2G1Count: eligibleB2G1.length,
+        meetsMinimum,
+        amountNeededForMin: 599 - finalPayable
+    };
 }
 
 function renderCart() {
     const container = document.getElementById('cart-items-container');
     if (!container) return;
-
-    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     if (cart.length === 0) {
         container.innerHTML = '<p style="text-align:center;">Your cart is empty. <a href="index.html#shop">Shop Now</a></p>';
@@ -161,43 +149,43 @@ function renderCart() {
 
     document.getElementById('checkout-form-container').style.display = 'block';
 
-    let flatCart = [];
-    cart.forEach(item => {
-        for (let i = 0; i < item.quantity; i++) flatCart.push(item);
-    });
-    flatCart.sort((a, b) => b.price - a.price);
+    const totals = calculateCartTotals();
 
-    let subtotal = 0;
-    let b2g1Discount = 0;
-    flatCart.forEach((item, index) => {
-        subtotal += item.price;
-        if ((index + 1) % 3 === 0) b2g1Discount += item.price;
-    });
-
-    let itemsForFree = 3 - (totalCount % 3);
-    let progressHtml = '';
-    if (itemsForFree < 3) {
-        progressHtml = `<div class="cart-progress">Add ${itemsForFree} more item(s) to get 1 FREE Diya!</div>`;
-    } else {
-        progressHtml = `<div class="cart-progress">🎉 B2G1 Free Diya Unlocked!</div>`;
+    // B2G1 Progress
+    let b2g1ProgressHtml = '';
+    let b2g1Remainder = totals.eligibleB2G1Count % 3;
+    if (totals.eligibleB2G1Count > 0) {
+        if (b2g1Remainder !== 0) {
+            b2g1ProgressHtml = `<div class="cart-progress">Add ${3 - b2g1Remainder} more premium plate(s) (₹500+) to unlock 1 FREE!</div>`;
+        } else {
+            b2g1ProgressHtml = `<div class="cart-progress">🎉 B2G1 Free Diya Plate Unlocked!</div>`;
+        }
     }
 
-    let finalPayable = subtotal - b2g1Discount;
-    let deliveryFee = finalPayable >= 599 ? 0 : 50;
+    // Min Order Value Warning
+    let minOrderHtml = '';
+    const payOnlineBtn = document.getElementById('btn-pay-online');
+    const payCodBtn = document.getElementById('btn-pay-cod');
 
-    // 7. Automatic Free Gift Condition (11 Free Diyas for ₹1000+)
-    let freeGiftUnlocked = finalPayable >= 1000;
+    if (!totals.meetsMinimum) {
+        minOrderHtml = `<div class="min-order-alert">⚠️ Minimum cart value is ₹599 for standard festive diyas. Please add ₹${totals.amountNeededForMin} more to proceed to checkout.</div>`;
+        if (payOnlineBtn) payOnlineBtn.disabled = true;
+        if (payCodBtn) payCodBtn.disabled = true;
+    } else {
+        if (payOnlineBtn) payOnlineBtn.disabled = false;
+        if (payCodBtn) payCodBtn.disabled = false;
+    }
+
+    // Free 11-Diya Gift (₹1000+)
+    let giftHtml = '';
     const giftLine = document.getElementById('free-gift-line');
-    if (giftLine) {
-        giftLine.style.display = freeGiftUnlocked ? 'flex' : 'none';
-    }
+    if (giftLine) giftLine.style.display = totals.hasGift ? 'flex' : 'none';
 
-    let giftBannerHtml = '';
-    if (freeGiftUnlocked) {
-        giftBannerHtml = `<div class="cart-gift-banner">🎁 Congratulations! 11 Free 2" Diyas will be included in your package!</div>`;
-    } else {
-        let needed = 1000 - finalPayable;
-        giftBannerHtml = `<div class="cart-progress" style="background:#e8f4fd; color:#0d47a1; border-color:#bbdefb;">Add ₹${needed} more to get 11 Free 2" Diyas!</div>`;
+    if (totals.hasGift) {
+        giftHtml = `<div class="cart-gift-banner">🎁 Congratulations! 11 Free 2" Diyas will be included in your package!</div>`;
+    } else if (totals.meetsMinimum) {
+        let neededForGift = 1000 - totals.finalPayable;
+        giftHtml = `<div class="cart-progress" style="background:#e8f4fd; color:#0d47a1; border-color:#bbdefb;">Add ₹${neededForGift} more to get 11 Free 2" Diyas!</div>`;
     }
 
     let itemsHtml = cart.map((item, index) => `
@@ -205,7 +193,7 @@ function renderCart() {
             <img src="${item.image}" alt="${item.name}">
             <div class="cart-item-details">
                 <h4>${item.name}</h4>
-                <p>₹${item.price}</p>
+                <p>₹${item.price} ${item.price >= 500 ? '<span style="color:#2e7d32; font-size:0.8rem;">(Eligible for B2G1)</span>' : ''}</p>
             </div>
             <div class="cart-item-actions">
                 <div class="qty-control">
@@ -218,12 +206,13 @@ function renderCart() {
         </div>
     `).join('');
 
-    container.innerHTML = progressHtml + giftBannerHtml + itemsHtml;
+    container.innerHTML = minOrderHtml + b2g1ProgressHtml + giftHtml + itemsHtml;
 
-    document.getElementById('summary-subtotal').textContent = `₹${subtotal}`;
-    document.getElementById('summary-discount').textContent = `- ₹${b2g1Discount}`;
-    document.getElementById('summary-delivery').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
-    document.getElementById('summary-total').textContent = `₹${finalPayable + deliveryFee}`;
+    document.getElementById('summary-subtotal').textContent = `₹${totals.subtotal}`;
+    document.getElementById('summary-discount').textContent = `- ₹${totals.b2g1Discount}`;
+    document.getElementById('summary-delivery').textContent = totals.deliveryFee === 0 ? 'FREE' : `₹${totals.deliveryFee}`;
+    document.getElementById('summary-total').textContent = `₹${totals.orderTotal}`;
+    document.getElementById('summary-prepaid-total').textContent = `₹${totals.prepaidTotal}`;
 }
 
 function updateQty(index, delta) {
@@ -239,40 +228,59 @@ function removeItem(index) {
     renderCart();
 }
 
-function submitOrder(event) {
-    event.preventDefault();
-    if (cart.length === 0) return;
+function validateCustomerForm() {
+    const totals = calculateCartTotals();
+    if (!totals.meetsMinimum) {
+        alert(`Minimum order value must be at least ₹599 to checkout. Please add ₹${totals.amountNeededForMin} more!`);
+        return null;
+    }
 
-    let flatCart = [];
-    cart.forEach(item => {
-        for (let i = 0; i < item.quantity; i++) flatCart.push(item);
-    });
-    flatCart.sort((a, b) => b.price - a.price);
+    const name = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    const address = document.getElementById('c-address').value.trim();
 
-    let subtotal = 0;
-    let b2g1Discount = 0;
-    flatCart.forEach((item, index) => {
-        subtotal += item.price;
-        if ((index + 1) % 3 === 0) b2g1Discount += item.price;
-    });
+    if (!name || !phone || !address) {
+        alert("Please fill in your name, phone number, and complete delivery address.");
+        return null;
+    }
+    return { name, phone, address };
+}
 
-    let finalPayable = subtotal - b2g1Discount;
-    let deliveryFee = finalPayable >= 599 ? 0 : 50;
-    let hasFreeGift = finalPayable >= 1000;
+function handleOnlinePayment() {
+    const customer = validateCustomerForm();
+    if (!customer) return;
 
-    const name = document.getElementById('c-name').value;
-    const phone = document.getElementById('c-phone').value;
-    const address = document.getElementById('c-address').value;
+    const totals = calculateCartTotals();
+    localStorage.setItem('prakash_last_order', JSON.stringify({
+        customer,
+        items: cart,
+        total: totals.prepaidTotal,
+        paymentMethod: 'Prepaid Razorpay'
+    }));
 
+    window.location.href = `${RAZORPAY_PAGE_URL}?amount=${totals.prepaidTotal}&name=${encodeURIComponent(customer.name)}&phone=${encodeURIComponent(customer.phone)}`;
+}
+
+function handleCodWhatsApp() {
+    const customer = validateCustomerForm();
+    if (!customer) return;
+
+    const totals = calculateCartTotals();
     let orderItems = cart.map(item => `${item.quantity}x ${item.name} (₹${item.price})`).join('\n');
-    let giftText = hasFreeGift ? `\n🎁 *FREE GIFT INCLUDED:* 11 Pcs 2" Diyas (₹0)` : '';
+    let giftText = totals.hasGift ? `\n🎁 *FREE GIFT INCLUDED:* 11 Pcs 2" Diyas (₹0)` : '';
 
-    let message = `*NEW DIWALI ORDER - PRAKASH DECOR* 🪔\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n\n*Items:*\n${orderItems}${giftText}\n\n*Subtotal:* ₹${subtotal}\n*B2G1 Discount:* -₹${b2g1Discount}\n*Delivery:* ${deliveryFee === 0 ? 'FREE' : '₹' + deliveryFee}\n*Total to Pay:* ₹${finalPayable + deliveryFee}\n\n_(Note: 5% Instant Discount applies if paying via UPI/Prepaid)_`;
+    let message = `*NEW COD ORDER - PRAKASH DECOR* 🪔\n\n*Name:* ${customer.name}\n*Phone:* ${customer.phone}\n*Address:* ${customer.address}\n\n*Items:*\n${orderItems}${giftText}\n\n*Subtotal:* ₹${totals.subtotal}\n*B2G1 Discount:* -₹${totals.b2g1Discount}\n*Delivery:* ${totals.deliveryFee === 0 ? 'FREE' : '₹' + totals.deliveryFee}\n*Total to Pay on Delivery:* ₹${totals.orderTotal}\n\n*Payment Mode:* Cash on Delivery (COD)\n*Address:* Prakash Decor, Uttam Nagar, New Delhi 110059`;
 
-    window.open(`https://wa.me/919000000000?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
     cart = [];
     saveCart();
     window.location.href = "index.html";
+}
+
+function changeMainImage(newSrc, thumb) {
+    document.getElementById('main-product-image').src = newSrc;
+    document.querySelectorAll('.thumb').forEach(el => el.classList.remove('active'));
+    thumb.classList.add('active');
 }
 
 function initParticles() {
@@ -331,3 +339,59 @@ function initCountdown() {
         }
     }, 1000);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartIcon();
+    const wEl = document.getElementById('wishlist-count');
+    if (wEl) wEl.textContent = wishlist.length;
+
+    initParticles();
+    initCountdown();
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+    }
+
+    renderProducts();
+
+    const detailContainer = document.getElementById('product-detail-container');
+    if (detailContainer) {
+        const productId = parseInt(new URLSearchParams(window.location.search).get('id'));
+        const product = products.find(p => p.id === productId);
+
+        if (product) {
+            document.title = `${product.name} | Prakash Decor`;
+            const promoNotice = product.price >= 500 
+                ? '<div class="b2g1-callout">🪔 Diwali Offer: BUY 2 GET 1 FREE</div>'
+                : '<div class="b2g1-callout" style="background:#4a2800; color:#ffd54f;">⚡ Min. Cart Value: ₹599</div>';
+
+            let extraHTML = '';
+            if (product.extraImages && product.extraImages.length > 0) {
+                extraHTML = `
+                    <div class="thumbnail-gallery">
+                        <img src="${product.image}" class="thumb active" onclick="changeMainImage(this.src, this)">
+                        ${product.extraImages.map(img => `<img src="${img}" class="thumb" onclick="changeMainImage(this.src, this)">`).join('')}
+                    </div>
+                `;
+            }
+
+            detailContainer.innerHTML = `
+                <div class="product-detail-image">
+                    <img id="main-product-image" src="${product.image}" alt="${product.name}">
+                    ${extraHTML}
+                </div>
+                <div class="product-detail-info">
+                    ${promoNotice}
+                    <h1>${product.name}</h1>
+                    <p class="price" style="font-size:1.8rem; margin:10px 0;">₹${product.price}</p>
+                    <div class="description">${product.description}</div>
+                    <button class="btn primary-btn w-100" style="margin-top:20px;" onclick="addToCart(${product.id})">Add to Cart</button>
+                </div>
+            `;
+        }
+    }
+
+    renderCart();
+});
