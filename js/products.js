@@ -6,8 +6,8 @@ const products = [
         price: 899,
         category: "terracotta",
         image: "images/1.jpeg",
-        extraImages: ["images/1.1.jpeg"], // Add your extra photos here later
-        description: '🪔 Hand-Painted Terracotta Om Diya Plate
+        extraImages: ["images/1.1.jpeg"],
+        description: `🪔 Hand-Painted Terracotta Om Diya Plate
 Illuminate your home with our magnificent festive centerpiece, handcrafted by local artisans. Featuring an auspicious golden Om (ॐ) at its heart, this eco-friendly clay platter is bordered by 12 hand-molded diyas (oil lamps) to create a stunning circle of natural firelight.
 
 Special Festive Price: ₹899
@@ -28,14 +28,15 @@ Prepaid Discount: Save an extra 5% instantly on UPI & prepaid orders.
 
 Risk-Free Guarantee: 2-day return policy if the product is damaged in transit.
 
-Support local craftsmanship & brighten your festivities this Shubh Deepawali! 🪔'    },
-        {
+Support local craftsmanship & brighten your festivities this Shubh Deepawali! 🪔`
+    },
+    {
         id: 2,
         name: "Medium Painted Om 15 Diya Plate",
         price: 699,
         category: "terracotta",
         image: "images/2.jpeg",
-        extraImages: ["images/2.1.jpeg","images/2.2.jpeg","images/2.3.jpeg"], // Add your extra photos here later
+        extraImages: ["images/2.1.jpeg","images/2.2.jpeg","images/2.3.jpeg"],
         description: "Beautifully hand-painted terracotta plate featuring a central 'Om' symbol surrounded by colorful attached diyas. Perfect for your main Diwali centerpiece."
     },
     {
